@@ -1,0 +1,296 @@
+@import "colors.scss";
+/*fuente principal Montserrat*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "body.scss";
+@import "header.scss";
+@import "footer.scss";
+@import "btn.scss";
+@import "card.scss";
+
+html {
+  font-size: 62.5%;
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif;
+}
+a {
+  text-decoration: none !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+.fa-bars {
+  font-size: 4rem;
+  margin-right: 20px;
+  color: $opposite-color;
+}
+.navlink {
+  text-decoration: none;
+  color: $opposite-color;
+  padding: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+li {
+  list-style: none;
+}
+
+a:hover {
+  color: $main-color;  
+}
+
+.p-4 {
+  > ul {
+    > li {
+      text-align: center;
+      width: 15rem;
+      &:hover {
+        background-color: $opposite-color;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+}
+
+.nav-inferior {
+  border-top: solid 1px $main-dark-color;
+}
+
+.section-title {
+  text-transform: uppercase;
+  font-size: 4rem;
+  max-width: 100%;
+  padding: 2rem;
+  @media (max-width: 1000px) {
+    text-align: center;
+  }
+}
+.row {
+  margin: 0px;
+}
+
+.banner-container {
+  background-position-x: center;
+  max-width: 100%;
+  min-height: 70vh;
+  background-size: cover;
+  @media (max-width: 1000px) {
+    min-height: 60vh;
+    padding-bottom: 3rem;
+  }
+}
+
+.banner-bg {
+  background-image: url(../img/young-businesswoman-posing-with-copy-space.jpg);
+  @extend .banner-container;
+}
+.banner-foot-bg {
+  background-image: url(../img/agendar-servicio.jpg);
+  height: 50px;
+  @extend .banner-container;
+}
+.banner-bg-review {
+  background-image: url(../img/happy-diverse-business-partners-closing-deal.jpg);
+  @extend .banner-container;
+}
+.banner-bg-services {
+  background-image: url(../img/business-training.jpg);
+  @extend .banner-container;
+}
+.banner-bg-about {
+  background-image: url(../img/coach-by-whiteboard.jpg);
+  @extend .banner-container;
+}
+.banner-bg-coaching {
+  background-image: url(../img/aerial-view-business-team.jpg);
+  @extend .banner-container;
+}
+@mixin title-font-style ($font-size, $max-width){
+  padding-left: 3rem;
+  color: $main-color;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: $font-size;
+  max-width: $max-width;
+  @media (max-width: 1000px) {
+    margin: 0 3rem;
+    align-items: center;
+    font-size: 4rem;
+    max-width: 90%;
+    padding-left: 0rem;   
+  }
+}
+.banner-title {
+  @include title-font-style(6rem, 50%);  
+  text-shadow: 2px 2px 2px rgba(0,0,0,0.6);
+ 
+}
+.banner-title-foot {  
+  @include title-font-style(4rem, 60%);  
+  text-shadow: 1px 1px #0d0d0d;  
+  text-align: center;
+
+}
+.contact_image {
+  padding: 0;
+  max-width: 80%;
+}
+.contact_clearbg {
+  border-radius: 0.5rem;
+  background-color: $white;
+  max-width: 80%;
+  padding: 2rem;
+  p {
+    margin: 0;
+  }
+  div {
+    margin-top: 1rem;
+  }
+  img {
+    max-width: 7rem;
+   
+  }
+  h3 {
+    top: 5%;
+    left: 15%;
+  }
+}
+.services {
+  padding: 2rem;
+}
+.about {
+  background-color: $main-color;
+  height: 500px;
+  padding: 2rem;
+  margin: 0rem;
+  h1 {
+    text-align: center;
+    font-size: 5rem;
+  }
+  a{
+    color: $opposite-color; 
+}
+}
+.col-md-6{
+  padding-left: 0rem;
+  @media (max-width: 1000px){
+    padding-left: 0rem;
+  }
+}
+
+.contact-form{
+  >.col-md-6{
+    padding-left: 2rem;
+  }
+}
+
+.subtitle {
+  padding: 4rem;
+  text-align: center;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+.motivation::before{
+  content: "";
+  background-image: url(../img/smiling-young-employee-giving-presentation-working-with-flipchart-meeting-room.png);
+  filter: grayscale(51%) brightness(21%) saturate(281%) contrast(75%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.motivation {
+  position: relative;
+  height: auto; 
+  padding: 3rem;
+  margin-bottom: 0 auto;
+  opacity: 100%;
+  max-width: 100%;  
+}
+
+.motivation__wrd {
+  position: relative;
+  color: $main-color;
+  font-size: 4rem;
+  text-shadow: 1px 1px #0d0d0d;
+  text-align: center
+}
+.motivation__name{
+  @extend .motivation__wrd;
+  margin-top: 2rem;
+  font-size: 3rem;
+  text-align: right;
+}
+.form-control {
+  padding: 1rem;
+}
+.contactForm__btn {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 16px 34px;
+  line-height: 1;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease-in-out;
+  background-color: $opposite-color;
+  color: $main-color;
+  width: 20rem;  
+  @media (max-width: 447px){
+    width: 100%;
+    
+  }
+}
+
+.map iframe {
+  display: block;
+  margin-top: 2rem;
+  max-height: 30rem;
+  width: 50vw;
+  @media (max-width: 767px) {
+    width: 100vw;
+    
+  }
+}
+.carousel-inner{
+  a{
+    color: $opposite-color;
+  }
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon,
+.carousel-indicators > li {
+  filter: invert(100%);
+}
+.carousel-control-next {
+  right: 20%;
+  @media (max-width: 1000px) {
+    right: 0%;
+  }
+}
+.carousel-control-prev {
+  left: 20%;
+  @media (max-width: 1000px) {
+    left: 0%;
+  }
+}
+.list{  
+  >li{     
+    padding: 1rem;
+  }
+}
+.list-container {
+  border-bottom: solid 1px;
+}
+
+main{
+  margin-bottom: 3rem;
+}

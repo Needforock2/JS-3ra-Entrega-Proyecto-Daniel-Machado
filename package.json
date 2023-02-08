@@ -1,0 +1,26 @@
+{
+  "name": "proyecto-3ra-entrega",
+  "version": "1.0.0",
+  "description": "implementacion de npm, sass asi como SEO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "node-sass --include-path scss src/scss/style.scss assets/css/style.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Needforock2/proyectoprueba.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Needforock2/proyectoprueba/issues"
+  },
+  "homepage": "https://github.com/Needforock2/proyectoprueba#readme",
+  "devDependencies": {
+    "node-sass": "^8.0.0",
+    "nodemon": "^2.0.20"
+  }
+}

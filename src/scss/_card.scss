@@ -1,0 +1,40 @@
+.card {
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+    width: 40vw;
+    border-radius: 1rem;
+    box-shadow: 4px 7px 7px 1px rgba(0,0,0,0.1);
+    min-height: 40rem;
+    @media (max-width: 1000px) {
+      margin-top: 2rem;
+      padding: 2rem;
+      width: 70%;
+      min-height: 47rem;
+    }
+    @media (max-width: 600px) {
+      margin-top: 2rem;
+      padding: 2rem;
+      width: 95%;
+      min-height: 47rem;
+    }
+    p{
+      max-width: 90%;
+      margin: 1rem auto;
+      font-size: 1.5rem;
+    }
+}
+.card__img {
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem auto;
+    @media (max-width: 460px) {
+      width: 7rem;
+      height: 7rem;
+    }
+  }
+   
+.card__ttl {
+    margin: 1rem;
+    font-size: 2rem;
+}

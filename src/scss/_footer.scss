@@ -1,0 +1,36 @@
+.navigation-foot {
+  
+    text-align: center;
+    color: $main-color;
+    background-color: $opposite-color;
+    padding: 2rem 2rem;
+    .navlink {
+      font-size: 1rem;
+      padding: 1rem 0;
+      color: $main-color;
+      width: 100%;
+      &:hover{
+        color: $opposite-color;            
+        transition: all 0.3s ease-in-out;
+      }
+      
+     
+    }
+    > div {
+      
+      > ul {
+            > li {
+                &:hover {
+                  background-color: $main-color;            
+                  transition: all 0.3s ease-in-out;
+                }        
+              }
+            @media (max-width: 1000px){
+                margin: 0 auto;
+                          
+            }
+        }
+    }
+    
+    
+}

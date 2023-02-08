@@ -1,0 +1,411 @@
+/*fuente principal Montserrat*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+body {
+  font-size: 16px;
+  font-family: 'Montserrat',Helvetica,Arial,Lucida,sans-serif;
+  background-color: #F0F2F0; }
+
+.header {
+  padding: 10px;
+  margin: 0px;
+  background-color: #F0F2F0;
+  align-items: center;
+  box-shadow: 2px 3px 8px 2px rgba(0, 0, 0, 0.81); }
+  .header > i {
+    display: none; }
+    @media (max-width: 1000px) {
+      .header > i {
+        display: block; } }
+  .header .navigation > ul {
+    margin-bottom: 0px; }
+    .header .navigation > ul li:hover {
+      background-color: #0D0D0D;
+      transition: all 0.3s ease-in-out; }
+  @media (max-width: 1000px) {
+    .header .navigation {
+      display: none; } }
+  .header .navigation:hover {
+    right: 0px;
+    top: 0rem; }
+  @media (max-width: 1000px) {
+    .header {
+      justify-content: space-between; } }
+  .header .title {
+    padding: 1rem 0rem 1rem 0rem;
+    color: #0D0D0D;
+    width: 60%; }
+    .header .title a {
+      color: inherit; }
+      .header .title a h2 {
+        margin: 0rem;
+        padding-left: 3rem;
+        padding-right: 4rem;
+        font-weight: bold;
+        font-size: 5rem; }
+        @media (max-width: 1000px) {
+          .header .title a h2 {
+            padding-left: 2rem;
+            padding-right: 1rem;
+            font-size: 4rem; } }
+        @media (max-width: 475px) {
+          .header .title a h2 {
+            font-size: 3rem; } }
+    .header .title h4 {
+      padding-left: 10rem;
+      font-size: 2rem; }
+      @media (max-width: 1000px) {
+        .header .title h4 {
+          padding-left: 6.6rem;
+          padding-right: 1rem; } }
+      @media (max-width: 475px) {
+        .header .title h4 {
+          font-size: 1.5rem;
+          padding-left: 5.5rem; } }
+      @media (max-width: 375px) {
+        .header .title h4 {
+          font-size: 1.5rem;
+          padding-top: 1rem;
+          padding-left: 2rem; } }
+
+.navbar {
+  display: none; }
+  @media (max-width: 1000px) {
+    .navbar {
+      display: block; } }
+
+.topNav {
+  position: sticky;
+  top: 0px;
+  z-index: 100; }
+
+.navbar-dark .navbar-toggler {
+  border: none;
+  color: #0D0D0D; }
+
+.navigation-foot {
+  text-align: center;
+  color: #F0F2F0;
+  background-color: #0D0D0D;
+  padding: 2rem 2rem; }
+  .navigation-foot .navlink {
+    font-size: 1rem;
+    padding: 1rem 0;
+    color: #F0F2F0;
+    width: 100%; }
+    .navigation-foot .navlink:hover {
+      color: #0D0D0D;
+      transition: all 0.3s ease-in-out; }
+  .navigation-foot > div > ul > li:hover {
+    background-color: #F0F2F0;
+    transition: all 0.3s ease-in-out; }
+  @media (max-width: 1000px) {
+    .navigation-foot > div > ul {
+      margin: 0 auto; } }
+
+.btn {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 16px 34px;
+  line-height: 1;
+  border-radius: 2rem;
+  margin-left: 3rem;
+  transition: all 0.3s ease-in-out;
+  background-color: #ff9100;
+  text-shadow: 1px 1px #7e7c7c;
+  color: #F0F2F0;
+  width: 6rem; }
+  .btn:hover {
+    color: #0D0D0D;
+    width: 13rem;
+    text-shadow: none; }
+
+.card {
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+  width: 40vw;
+  border-radius: 1rem;
+  box-shadow: 4px 7px 7px 1px rgba(0, 0, 0, 0.1);
+  min-height: 40rem; }
+  @media (max-width: 1000px) {
+    .card {
+      margin-top: 2rem;
+      padding: 2rem;
+      width: 70%;
+      min-height: 47rem; } }
+  @media (max-width: 600px) {
+    .card {
+      margin-top: 2rem;
+      padding: 2rem;
+      width: 95%;
+      min-height: 47rem; } }
+  .card p {
+    max-width: 90%;
+    margin: 1rem auto;
+    font-size: 1.5rem; }
+
+.card__img {
+  width: 10rem;
+  height: 10rem;
+  margin: 1rem auto; }
+  @media (max-width: 460px) {
+    .card__img {
+      width: 7rem;
+      height: 7rem; } }
+
+.card__ttl {
+  margin: 1rem;
+  font-size: 2rem; }
+
+html {
+  font-size: 62.5%;
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif; }
+
+a {
+  text-decoration: none !important; }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+.container-fluid {
+  padding: 0; }
+
+.fa-bars {
+  font-size: 4rem;
+  margin-right: 20px;
+  color: #0D0D0D; }
+
+.navlink {
+  text-decoration: none;
+  color: #0D0D0D;
+  padding: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block; }
+
+li {
+  list-style: none; }
+
+a:hover {
+  color: #F0F2F0; }
+
+.p-4 > ul > li {
+  text-align: center;
+  width: 15rem; }
+  .p-4 > ul > li:hover {
+    background-color: #0D0D0D;
+    transition: all 0.3s ease-in-out; }
+
+.nav-inferior {
+  border-top: solid 1px #BFBFBF; }
+
+.section-title {
+  text-transform: uppercase;
+  font-size: 4rem;
+  max-width: 100%;
+  padding: 2rem; }
+  @media (max-width: 1000px) {
+    .section-title {
+      text-align: center; } }
+
+.row {
+  margin: 0px; }
+
+.banner-container, .banner-bg, .banner-foot-bg, .banner-bg-review, .banner-bg-services, .banner-bg-about, .banner-bg-coaching {
+  background-position-x: center;
+  max-width: 100%;
+  min-height: 70vh;
+  background-size: cover; }
+  @media (max-width: 1000px) {
+    .banner-container, .banner-bg, .banner-foot-bg, .banner-bg-review, .banner-bg-services, .banner-bg-about, .banner-bg-coaching {
+      min-height: 60vh;
+      padding-bottom: 3rem; } }
+
+.banner-bg {
+  background-image: url(../img/young-businesswoman-posing-with-copy-space.jpg); }
+
+.banner-foot-bg {
+  background-image: url(../img/agendar-servicio.jpg);
+  height: 50px; }
+
+.banner-bg-review {
+  background-image: url(../img/happy-diverse-business-partners-closing-deal.jpg); }
+
+.banner-bg-services {
+  background-image: url(../img/business-training.jpg); }
+
+.banner-bg-about {
+  background-image: url(../img/coach-by-whiteboard.jpg); }
+
+.banner-bg-coaching {
+  background-image: url(../img/aerial-view-business-team.jpg); }
+
+.banner-title {
+  padding-left: 3rem;
+  color: #F0F2F0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 6rem;
+  max-width: 50%;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6); }
+  @media (max-width: 1000px) {
+    .banner-title {
+      margin: 0 3rem;
+      align-items: center;
+      font-size: 4rem;
+      max-width: 90%;
+      padding-left: 0rem; } }
+
+.banner-title-foot {
+  padding-left: 3rem;
+  color: #F0F2F0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 4rem;
+  max-width: 60%;
+  text-shadow: 1px 1px #0d0d0d;
+  text-align: center; }
+  @media (max-width: 1000px) {
+    .banner-title-foot {
+      margin: 0 3rem;
+      align-items: center;
+      font-size: 4rem;
+      max-width: 90%;
+      padding-left: 0rem; } }
+
+.contact_image {
+  padding: 0;
+  max-width: 80%; }
+
+.contact_clearbg {
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  max-width: 80%;
+  padding: 2rem; }
+  .contact_clearbg p {
+    margin: 0; }
+  .contact_clearbg div {
+    margin-top: 1rem; }
+  .contact_clearbg img {
+    max-width: 7rem; }
+  .contact_clearbg h3 {
+    top: 5%;
+    left: 15%; }
+
+.services {
+  padding: 2rem; }
+
+.about {
+  background-color: #F0F2F0;
+  height: 500px;
+  padding: 2rem;
+  margin: 0rem; }
+  .about h1 {
+    text-align: center;
+    font-size: 5rem; }
+  .about a {
+    color: #0D0D0D; }
+
+.col-md-6 {
+  padding-left: 0rem; }
+  @media (max-width: 1000px) {
+    .col-md-6 {
+      padding-left: 0rem; } }
+
+.contact-form > .col-md-6 {
+  padding-left: 2rem; }
+
+.subtitle {
+  padding: 4rem;
+  text-align: center;
+  font-size: 2rem;
+  text-transform: uppercase; }
+
+.motivation::before {
+  content: "";
+  background-image: url(../img/smiling-young-employee-giving-presentation-working-with-flipchart-meeting-room.png);
+  filter: grayscale(51%) brightness(21%) saturate(281%) contrast(75%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+.motivation {
+  position: relative;
+  height: auto;
+  padding: 3rem;
+  margin-bottom: 0 auto;
+  opacity: 100%;
+  max-width: 100%; }
+
+.motivation__wrd, .motivation__name {
+  position: relative;
+  color: #F0F2F0;
+  font-size: 4rem;
+  text-shadow: 1px 1px #0d0d0d;
+  text-align: center; }
+
+.motivation__name {
+  margin-top: 2rem;
+  font-size: 3rem;
+  text-align: right; }
+
+.form-control {
+  padding: 1rem; }
+
+.contactForm__btn {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 16px 34px;
+  line-height: 1;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease-in-out;
+  background-color: #0D0D0D;
+  color: #F0F2F0;
+  width: 20rem; }
+  @media (max-width: 447px) {
+    .contactForm__btn {
+      width: 100%; } }
+
+.map iframe {
+  display: block;
+  margin-top: 2rem;
+  max-height: 30rem;
+  width: 50vw; }
+  @media (max-width: 767px) {
+    .map iframe {
+      width: 100vw; } }
+
+.carousel-inner a {
+  color: #0D0D0D; }
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon,
+.carousel-indicators > li {
+  filter: invert(100%); }
+
+.carousel-control-next {
+  right: 20%; }
+  @media (max-width: 1000px) {
+    .carousel-control-next {
+      right: 0%; } }
+
+.carousel-control-prev {
+  left: 20%; }
+  @media (max-width: 1000px) {
+    .carousel-control-prev {
+      left: 0%; } }
+
+.list > li {
+  padding: 1rem; }
+
+.list-container {
+  border-bottom: solid 1px; }
+
+main {
+  margin-bottom: 3rem; }

@@ -1,0 +1,20 @@
+.btn {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 16px 34px;
+    line-height: 1;
+    border-radius: 2rem;
+    margin-left: 3rem;
+    transition: all 0.3s ease-in-out;
+    background-color: $accent-color;
+    text-shadow: 1px 1px #7e7c7c;
+    color: $main-color;
+    width: 6rem;
+    &:hover {
+      
+      color: $opposite-color;
+      width: 13rem;
+      text-shadow: none;
+    }
+  }
