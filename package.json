@@ -1,5 +1,5 @@
 {
-  "name": "proyecto-3ra-entrega",
+  "name": "proyecto-js-primeraentrega",
   "version": "1.0.0",
   "description": "implementacion de npm, sass asi como SEO",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Needforock2/proyectoprueba.git"
+    "url": "git+https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Needforock2/proyectoprueba/issues"
+    "url": "https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git/issues"
   },
-  "homepage": "https://github.com/Needforock2/proyectoprueba#readme",
+  "homepage": "https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git#readme",
   "devDependencies": {
     "node-sass": "^8.0.0",
     "nodemon": "^2.0.20"
