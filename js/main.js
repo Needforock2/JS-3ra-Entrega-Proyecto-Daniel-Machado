@@ -35,7 +35,7 @@ class Cotizacion { //creamos objeto cotizacion que se compone de los objetos cli
     }
     agregarProductos(productos){ //metodo para agregar un array de productos directamente al array productos del objeto.
         this.productos = productos
-    }//metodo para calcular los valores
+    }//metodo para calcular los valores sub-tota iva y total
     obtenerPrecioTotal(){ 
         this.subTotal= this.productos.map(producto => producto.precio)
                              .reduce((suma, precio) => suma + precio, 0);
@@ -63,15 +63,15 @@ function crearMsj(arr){ // funcion para ensamblar un mensaje para posterior impr
 
 function finalQuote(cotizacion){ // funcion que recibe un objeto cotizacion y llama al metodo de totalizar ademas de imprimir el alert con la cotizacion final
     cotizacion.obtenerPrecioTotal()    //llamada al metodo para totalizar
-    let promptMessage= crearMsj(cotizacion.productos)
-    alert(  "Cotizacion: #" + cotizacion.id + "\n" +
+    let promptMessage= crearMsj(cotizacion.productos) //llama la funcion para crear un mensaje
+    alert(  "Cotizacion: #" + cotizacion.id + "\n" + //mostrar alert en pantalla con la cotizacion final
             "Cliente: "+ cotizacion.cliente.nombre+"\n"+
             "Teléfono: "+ cotizacion.cliente.telefono+"\n"+
             promptMessage + 
             "El Sub-total de los productos es $"+ cotizacion.subTotal + "\n" +
             "IVA: $" + cotizacion.iva +"\n" +
             "Total: $" + cotizacion.total )
-    console.log( "Cotizacion: #" + cotizacion.id + "\n" +
+    console.log( "Cotizacion: #" + cotizacion.id + "\n" + //mostrar cotizacion en console
                 "Cliente: "+ cotizacion.cliente.nombre+"\n"+
                  "Teléfono: "+ cotizacion.cliente.telefono+"\n"+
                 promptMessage + 
@@ -82,9 +82,9 @@ function finalQuote(cotizacion){ // funcion que recibe un objeto cotizacion y ll
 }
 
 let cotizaciones = [] //array donde estarán todas las cotizaciones
-let cotId =0
+let cotId =0 //valor inicial del Id de la cotizacion
 function crearCotizacion (cliente, productos){ // funcion para crear cotizaciones a partir de un objeto cliente y un array de productos, ademas aumenta el contador de ID de la cotizacion
-    cotId +=1;    
+    cotId +=1;    // aumenta id cada vez que se hace una cotizacion nueva
     let cotizacion = new Cotizacion(cliente, cotId) 
     cotizacion.agregarProductos(productos)
     cotizaciones.push(cotizacion)
