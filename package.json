@@ -1,7 +1,7 @@
 {
-  "name": "proyecto-js-primeraentrega",
+  "name": "proyecto-js-segunda-entrega",
   "version": "1.0.0",
-  "description": "implementacion de npm, sass asi como SEO",
+  "description": "sistema de cotizaciones",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git"
+    "url": "git+https://github.com/Needforock2/JS-2da-Entrega-Proyecto-Daniel-Machado"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git/issues"
+    "url": "https://github.com/Needforock2/JS-2da-Entrega-Proyecto-Daniel-Machado.git/issues"
   },
-  "homepage": "https://github.com/Needforock2/JS-Proyecto-Daniel-Machado.git#readme",
+  "homepage": "https://github.com/Needforock2/JS-2da-Entrega-Proyecto-Daniel-Machado.git#readme",
   "devDependencies": {
     "node-sass": "^8.0.0",
     "nodemon": "^2.0.20"
