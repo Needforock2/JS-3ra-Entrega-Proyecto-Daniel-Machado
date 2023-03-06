@@ -47,6 +47,7 @@ a:hover {
   color: $main-color;  
 }
 
+
 .p-4 {
   > ul {
     > li {
@@ -306,11 +307,17 @@ main{
   } 
   
 }
+.plus-button{
+  width: 100%;
+  position: sticky;
+  bottom: 10rem;
+}
+
 .fa-circle-plus{
   color: $accent-color;
-  position: absolute;
-  bottom: 3%;
-  right: 1%;
+ 
+  
+  z-index: 50;
   font-size: 6rem;
   &:hover{
     cursor: pointer;
@@ -328,7 +335,7 @@ main{
       }
     }
   }
-.list-grid{
+.quote-list-grid{
   display: grid;
   grid-template-columns: 15rem repeat(3, 1fr) 10px;
   grid-template-rows: 4rem;
@@ -340,6 +347,11 @@ main{
     align-items: center;
     
   }
+}
+
+.customer-list-grid{
+  @extend .quote-list-grid;
+  grid-template-columns: repeat(4, 1fr) 10px;
 }
 
 .quote-form-container{

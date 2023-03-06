@@ -1,87 +1,152 @@
-document.body.onload = function(){
-//creamos una base de productos precargados
-class Producto { //creamos el objeto producto
-    constructor(nombre, precio, sku) {
-        this.nombre  = nombre.toUpperCase();
-        this.precio  = parseFloat(precio);
-        this.sku = sku;
-        
-    }
-}
-
-let productStock =[ ] //creamos los productos y los pusheamos en un array
-productStock.push([new Producto("Disco Duro", 50000, 1),1])
-productStock.push([new Producto("Monitor", 100000, 2),1])
-productStock.push([new Producto("Laptop", 350000, 3),1])
-productStock.push([new Producto("CPU", 50000, 4),1])
-productStock.push([new Producto("Memoria RAM", 20000, 5),1])
 
 
-class Cliente { //creamos objeto cliente
-    constructor(nombre, apellido, telefono, mail) {
-        this.nombre  = nombre;
-        this.apellido = apellido
-        this.telefono  = telefono;
-        this.mail = mail
-        
-    }
-}
-
-class Cotizacion { //creamos objeto cotizacion que se compone de los objetos clientes y productos.
-    constructor(cliente, id) {
-        this.cliente  = cliente;
-        this.productos  = []; //array 2D que contiene el articulo (objeto) y la cantidad
-        this.id = id;
-        this.subTotal;
-        this.iva;
-        this.total;
-        this.date = new Date();       
-       
-    }
-    agregarProductos(productos){ //metodo para agregar un array de productos directamente al array productos del objeto.
-        this.productos = productos
-    }
-    //metodo para calcular los valores sub-tota iva y total
-    obtenerPrecioTotal(){ 
-        console.log(this.productos)
-        let precios = this.productos.map(item =>item[0].precio)
-        let cantidades = this.productos.map(item => item[1])        
-        let subTotales = []
-        for(let i=0; i< cantidades.length; i++){
-            subTotales[i] = cantidades[i]*precios[i]
+            //creamos una base de productos precargados
+        class Producto { //creamos el objeto producto
+            constructor(nombre, precio, sku) {
+                this.nombre  = nombre.toUpperCase();
+                this.precio  = parseFloat(precio);
+                this.sku = sku;
+                
+            }
         }
         
-        
-        this.subTotal= subTotales.reduce((suma, precio) => suma + precio, 0);
-        this.iva = this.subTotal*0.19;
-        this.total = this.subTotal + this.iva;
-    }    
-}
 
+        let productStock =[ ] //creamos los productos y los pusheamos en un array
+        productStock.push([new Producto("Disco Duro", 50000, 1),1])
+        productStock.push([new Producto("Monitor", 100000, 2),1])
+        productStock.push([new Producto("Laptop", 350000, 3),1])
+        productStock.push([new Producto("CPU", 50000, 4),1])
+        productStock.push([new Producto("Memoria RAM", 20000, 5),1])
 
-
-function crearMsj(arr){ // funcion para ensamblar un mensaje para posterior impresion por prompt
-    let promptMessage=""
-        let n=1
-        for (const producto of arr) {           
-            promptMessage += `Item ${n} ${producto.nombre} Precio: $${producto.precio} \n`
-            n +=1
+        class Usuario {
+            constructor(nombre, cotizaciones){
+                this.nombre = nombre
+                this.cotizaciones = cotizaciones
+            }
         }
-        return promptMessage;
-}
 
+        class Cliente { //creamos objeto cliente
+            constructor(nombre, apellido, telefono, mail) {
+                this.nombre  = nombre;
+                this.apellido = apellido
+                this.telefono  = telefono;
+                this.mail = mail
+                
+            }
+        }
 
-function printQuote(arrQuote){   //imprime todas las cotizaciones  
-    let quoteList = document.querySelector(".quote-container") 
-    let items = document.querySelectorAll(".cotizacion")
-        for(let i =0; i<items.length; i++){ //limpiamos el DOM
+        class Cotizacion { //creamos objeto cotizacion que se compone de los objetos clientes y productos.
+            constructor(cliente, id) {
+                this.cliente  = cliente;
+                this.productos  = []; //array 2D que contiene el articulo (objeto) y la cantidad
+                this.id = id;
+                this.subTotal;
+                this.iva;
+                this.total;
+                this.date = new Date();       
+            
+            }
+                agregarProductos(productos){ //metodo para agregar un array de productos directamente al array productos del objeto.
+                    this.productos = productos
+                }
+                //metodo para calcular los valores sub-tota iva y total
+                obtenerPrecioTotal(){ 
+                    console.log(this.productos)
+                    let precios = this.productos.map(item =>item[0].precio)
+                    let cantidades = this.productos.map(item => item[1])        
+                    let subTotales = []
+                    for(let i=0; i< cantidades.length; i++){
+                        subTotales[i] = cantidades[i]*precios[i]
+                    }
+                    
+                    
+                    this.subTotal= subTotales.reduce((suma, precio) => suma + precio, 0);
+                    this.iva = this.subTotal*0.19;
+                    this.total = this.subTotal + this.iva;
+                }    
+            }
+
+        let cotizaciones = obtenerLocalS() //array donde estarán todas las cotizaciones
+        document.body.onload = function(){
+            printQuote(cotizaciones)
+        }
+
+        //        
+ 
+        function clearQuoteDOM(){ //limpia al DOM donde estan las cotizaciones
+            let items = document.querySelectorAll(".cotizacion")
+            for(let i =0; i<items.length; i++){ //limpiamos el DOM
                 items[i].remove()
-        }           
+            }
+        }
+        
+
+ // verificaion de inicio de sesion y cargar datos iniciales
+    let usuario;
+    let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
+    let user = document.querySelector(".session")
+    function actualizarUsuario(usuario){
+        user.innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
+    }
+   
+
+
+    const guardarLocal = (clave, valor) => { //funcion para guardar en localstorage
+        localStorage.setItem(clave, JSON.stringify(valor))       
+        
+     };
+
+    function obtenerLocalS (){      //obtener cotizaciones en LS   
+        let almacenadas= JSON.parse(localStorage.getItem("listaCotizaciones"))        
+        const cotizaciones = []
+        if(almacenadas){
+            for(let cotizacion of almacenadas){
+                let objected = new Cotizacion(cotizacion.cliente, cotizacion.id)
+                objected.agregarProductos(cotizacion.productos)
+                objected.obtenerPrecioTotal()
+                cotizaciones.push(objected)
+            }  
+        } //else debo imprimir un mensaje para indicar que no hay cotizaciones
+        return cotizaciones       
+    }  
+    
+    
+    if(usuarioEnLS != null){
+        usuario = usuarioEnLS.toUpperCase() 
+        actualizarUsuario(usuario)
+    } 
+    function capturarUser (){
+        let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
+        if(usuarioEnLS != null){
+           if(confirm("Cerrar Sesion?")){
+            localStorage.removeItem("usuario")
+            user.innerHTML = `<i class="fa-solid fa-user-large navlink"></i> Iniciar Sesión`
+            clearQuoteDOM()
+           }else{
+            console.log("no")
+           }
+        }else{
+            let user = prompt("Ingrese su Nombre")
+            guardarLocal("usuario", user)
+            actualizarUsuario(user)
+            let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
+            printQuote(cotAlmacenadas) //llama al cotizador como tal   
+        }
+           
+    }    
+   
+    // fin de capturar usuario y subirlo al localstorage
+
+
+function printQuote(arrQuote){   //imprime todas las cotizaciones
+     
+    let quoteList = document.querySelector(".quote-container") 
+        clearQuoteDOM()            
   
         for(let cotizacion of arrQuote){
             let quoteItem = document.createElement("div")
             quoteItem.classList.add('col-12',  'justify-content-between', 'cotizacion')           
-            quoteItem.innerHTML= `  <ul id="${cotizacion.id}" class="col-12 list-grid justify-content-between">
+            quoteItem.innerHTML= `  <ul id="${cotizacion.id}" class="col-12 quote-list-grid justify-content-between">
                                         <li  id="cotizacion">${cotizacion.id}</li>
                                         <li  id="cliente">${cotizacion.cliente.nombre} ${cotizacion.cliente.apellido}</li>                                     
                                         <li  id="fecha">${cotizacion.date.getDate()}-${cotizacion.date.getMonth()+1}-${cotizacion.date.getFullYear()}</li>
@@ -101,107 +166,51 @@ function printQuote(arrQuote){   //imprime todas las cotizaciones
 
 
 
-let cotizaciones = [] //array donde estarán todas las cotizaciones
-let cotId =2 //valor inicial del Id de la cotizacion
+
+
+
+
+
 
 function crearCotizacion (cliente, productos){ // funcion para crear cotizaciones a partir de un objeto cliente y un array de productos, ademas aumenta el contador de ID de la cotizacion
     //console.log(productos)
-    cotId +=1;    // aumenta id cada vez que se hace una cotizacion nueva
-    let cotizacion = new Cotizacion(cliente, cotId) 
+    let cotLS = obtenerLocalS()
+    console.log(cotLS)
+    let lastQuoteId =0;
+    if(cotLS.length>0){
+        lastQuoteId = cotLS[cotLS.length-1].id   // ID de la ultima cotizacion
+    }    
+        
+    let cotizacion = new Cotizacion(cliente, lastQuoteId+1) 
     cotizacion.agregarProductos(productos)
-    cotizacion.obtenerPrecioTotal()
-    console.log(productos)
-    cotizaciones.push(cotizacion)
-    console.log("Lista de cotizaciones:")
-    console.log(cotizaciones)
-    //finalQuote(cotizacion)
+    cotizacion.obtenerPrecioTotal()    
+    cotizaciones.push(cotizacion)  
     
-    printQuote(cotizaciones) //llama al cotizador como tal
+    guardarLocal("listaCotizaciones", cotizaciones)
+    let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
+    printQuote(cotAlmacenadas) //llama al cotizador como tal
+    
 }
 
-function editarCotizacion(cotizacion, listaArticulos){
+function editarCotizacion(cotizacion, listaArticulos){   
     cotizacion.agregarProductos(listaArticulos)
     cotizacion.obtenerPrecioTotal()
-    printQuote(cotizaciones)
-    console.log("Lista de cotizaciones:")
-    console.log(cotizaciones)
-
-}
-
-
-
-function showArticles(comfirmation, cliente){ // funcion para mostrar la lista de articulos disponibles para cotizacion, realiza validaciones sobre el input del prompt
-    if(comfirmation){
-        let promptMessage= crearMsj(productStock)    
-        let quoteList = prompt("Selecciona el o los numeros de los productos a cotizar separados por un espacio \n" + promptMessage).split(" ")       
-        //console.log(quoteList)
-        let listaProductos = []
-               
-        let alerta =false
-        for(let i=0; i<quoteList.length; i++){            
-            if((parseInt(quoteList[i])<0 || parseInt(quoteList[i])>productStock.length || (isNaN(parseInt(quoteList[i])) && quoteList[i] != " "))) {               
-                alerta = true                
-            }       
-        }
-        if(alerta){            
-            alert ("Colocaste un articulo no válido")
-            showArticles(true, cliente)
-        }else{
-            for(let i=0; i<quoteList.length;i++){
-                listaProductos.push(productStock[quoteList[i]-1])
-            }
-            //console.log(cliente)
-            crearCotizacion(cliente, listaProductos )
-        } 
-    }
+    guardarLocal("listaCotizaciones", cotizaciones)
+    printQuote(cotizaciones)    
 }
 
 let clientes = [] //array donde se guardan los clientes registrados
 
-function requestInfo(){ // funcion inicial para solicitar datos del cliente
-    let customerName = prompt("Introduce Nombre y Apellido del cliente");
-    let phone = prompt ("Introduce teléfono del cliente") 
-    let cliente = new Cliente(customerName, phone)   
-    clientes.push(cliente)
-    console.log("Lista de Clientes:")
-    console.log(clientes)
-    var comfirmation = confirm("¿Deseas ver la lista de articulos?");
-    showArticles(comfirmation, cliente); 
-    
-}
-
-
-
-function datosIniciales(){ //creamos cotizaciones hardcoded para mostrar desde el principio
-    let arrQuoteInicial =[]
-    let cliente1= new Cliente("Emiliano", "machado", 123465, "emiliano@gmail.com")
-    let cliente2= new Cliente("Sara", "Cabrera", 123465, "sara@gmail.com")
-    let quote1 = new Cotizacion(cliente1,1)
-    let quote2 = new Cotizacion(cliente2,2)
-    quote1.productos=productStock
-    quote1.obtenerPrecioTotal()   
-    quote2.productos=productStock
-    quote2.obtenerPrecioTotal()        
-    cotizaciones.push(quote1)
-    cotizaciones.push(quote2)
-    console.log(cotizaciones)
-    //console.log(arrQuoteInicial)
-    printQuote(cotizaciones)
-    //requestInfo();
-}
- 
-datosIniciales()
-
 //funcion para eliminar cotizaciones
 
 function eraseQuote(id){
-    //console.log("hola "+ id)
-    for(let i=0; i<cotizaciones.length; i++){
-        //console.log(cotizacion)
+    
+    for(let i=0; i<cotizaciones.length; i++){        
         if(cotizaciones[i].id == id){            
             cotizaciones.splice(i,1)
             let quoteToErase = document.getElementById(id)
             quoteToErase.remove()
+            guardarLocal("listaCotizaciones", cotizaciones)
                         
         }
     }
@@ -313,7 +322,7 @@ function captureInputs(event){
                         }
                 }   
             }
-            console.log(listaArticulos.length)
+            
             if(listaArticulos.length>=1){                
                 editarCotizacion(cotizacion[0], listaArticulos)                
                 closeQuote()
@@ -388,9 +397,8 @@ closeQuoteFn.addEventListener("click", closeQuote )
 // boton guardar cotizacion
 let createQuote =document.querySelector(".quoteForm__btn")
 createQuote.addEventListener("click", captureInputs)
+//evento del boton inicio sesion
+user.addEventListener("click", capturarUser) 
 
 
-
-
-}
 

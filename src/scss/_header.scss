@@ -17,8 +17,18 @@
 				&:hover {
 					background-color: $opposite-color;
 					transition: all 0.3s ease-in-out;
+					color: white;
+					cursor: pointer;
+					i{
+						
+							color: white;
+							transition: all 0.3s ease-in-out;
+						
+					}
 				}
+				
 			}
+			
 		}
 		@media (max-width: 1000px) {
 			display: none;
@@ -92,4 +102,8 @@
 .navbar-dark .navbar-toggler {
 	border: none;
 	color: $opposite-color;
+}
+
+.session{
+	padding: .5rem;
 }
