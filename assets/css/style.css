@@ -567,7 +567,7 @@ main {
 .quote-form-container {
   scrollbar-color: transparent;
   scrollbar-width: 1px;
-  height: 110%;
+  height: 90vh;
   overflow-y: auto;
   -ms-overflow-style: none;
   /* IE and Edge */
