@@ -1,5 +1,3 @@
-
-
             //creamos una base de productos precargados
         class Producto { //creamos el objeto producto
             constructor(nombre, precio, sku) {
@@ -66,30 +64,45 @@
                 }    
             }
 
+        let newQuote = document.querySelector(".new-quote")
         let cotizaciones = obtenerLocalS() //array donde estarán todas las cotizaciones
         document.body.onload = function(){
-            printQuote(cotizaciones)
+            if(usuarioEnLS != null){
+                usuario = usuarioEnLS.toUpperCase() 
+                actualizarUsuario(usuario)
+                printQuote(cotizaciones)
+            } else{
+                newQuote.style.display="none"
+                clearQuoteDOM()
+            }
+            
         }
-
-        //        
- 
         function clearQuoteDOM(){ //limpia al DOM donde estan las cotizaciones
             let items = document.querySelectorAll(".cotizacion")
+            console.log(items)
             for(let i =0; i<items.length; i++){ //limpiamos el DOM
                 items[i].remove()
             }
         }
         
+        
 
  // verificaion de inicio de sesion y cargar datos iniciales
     let usuario;
     let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
-    let user = document.querySelector(".session")
+    let loginBtn = document.querySelector(".session")
+
     function actualizarUsuario(usuario){
-        user.innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
+        console.log(usuario)
+        let userName = document.querySelectorAll(".session-name")
+        userName[0].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
+        userName[1].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
     }
    
-
+    function cerrarSesion(e){    
+       localStorage.removeItem("usuario")
+       
+    }
 
     const guardarLocal = (clave, valor) => { //funcion para guardar en localstorage
         localStorage.setItem(clave, JSON.stringify(valor))       
@@ -108,31 +121,20 @@
             }  
         } //else debo imprimir un mensaje para indicar que no hay cotizaciones
         return cotizaciones       
-    }  
+    }     
     
-    
-    if(usuarioEnLS != null){
-        usuario = usuarioEnLS.toUpperCase() 
-        actualizarUsuario(usuario)
-    } 
-    function capturarUser (){
-        let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
-        if(usuarioEnLS != null){
-           if(confirm("Cerrar Sesion?")){
-            localStorage.removeItem("usuario")
-            user.innerHTML = `<i class="fa-solid fa-user-large navlink"></i> Iniciar Sesión`
-            clearQuoteDOM()
-           }else{
-            console.log("no")
-           }
-        }else{
-            let user = prompt("Ingrese su Nombre")
-            guardarLocal("usuario", user)
-            actualizarUsuario(user)
-            let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
-            printQuote(cotAlmacenadas) //llama al cotizador como tal   
-        }
-           
+  
+    function capturarUser (){                 
+            let usuario = document.getElementById("userName").value            
+            if(usuario.trim().length>0){                
+                guardarLocal("usuario", usuario.trim())
+                actualizarUsuario(usuario.trim())
+                let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
+                printQuote(cotAlmacenadas) //llama al cotizador como tal
+            }else{
+                e.preventDefault()
+            }             
+          
     }    
    
     // fin de capturar usuario y subirlo al localstorage
@@ -163,14 +165,6 @@ function printQuote(arrQuote){   //imprime todas las cotizaciones
             quoteList.appendChild(quoteItem) //agregamos todas las cotizaciones al DOM
         }   
   }
-
-
-
-
-
-
-
-
 
 function crearCotizacion (cliente, productos){ // funcion para crear cotizaciones a partir de un objeto cliente y un array de productos, ademas aumenta el contador de ID de la cotizacion
     //console.log(productos)
@@ -203,15 +197,13 @@ let clientes = [] //array donde se guardan los clientes registrados
 
 //funcion para eliminar cotizaciones
 
-function eraseQuote(id){
-    
+function eraseQuote(id){    
     for(let i=0; i<cotizaciones.length; i++){        
         if(cotizaciones[i].id == id){            
             cotizaciones.splice(i,1)
             let quoteToErase = document.getElementById(id)
             quoteToErase.remove()
-            guardarLocal("listaCotizaciones", cotizaciones)
-                        
+            guardarLocal("listaCotizaciones", cotizaciones)                        
         }
     }
 }
@@ -256,9 +248,8 @@ function eraseQuote(id){
     
 } 
 
-function eraseItem(){ //borramos los articulos de la lista para que no se agreguen nuevamente
-    let articulos = document.querySelectorAll(".form-check")
-   
+function eraseItem(){ //borramos los articulos de la lista del DOM para que no se agreguen nuevamente
+    let articulos = document.querySelectorAll(".form-check")   
     for(let articulo=0; articulo<articulos.length; articulo++){       
         articulos[articulo].remove()
     }
@@ -266,34 +257,30 @@ function eraseItem(){ //borramos los articulos de la lista para que no se agregu
 
 function blankQuote (){ //creamos el formulario en blanco con la lista de articulos
     //limpiamos el formulario
+    //document.body.classList.add("stop-scrolling");
+    const overlay = document.querySelector(".overlay")
+    overlay.classList.remove("hidden")
     let titulo = document.querySelector("#titulo")
      titulo.innerText = `COTIZACIÓN` 
     let form= document.querySelector("#quote-form")
     form.reset()
-
-
     let quoteForm = document.getElementsByClassName("quote-form-container")[0]
     quoteForm.style.display="block"    
     let articulos = document.querySelector(".contenedor-articulos")
-
     eraseItem() //limpiamos el DOM
-
-
-   for(let articulo of productStock){   
-    let item =document.createElement("div")    
-    item.classList.add('form-check', 'd-flex','row', 'align-items-center', 'justify-content-around')
-    item.innerHTML= `   <div class="col-6">
-                            <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios" value=${articulo[0].sku} >
-                            <label class="form-check-label" for="exampleRadios1">${articulo[0].nombre}</label>
-                        </div>
-                        <div class="col-3"> 
-                            <input type="number" class="form-control" id="SKU-${articulo[0].sku}" placeholder="0" min="0" required>
-                        </div>
-                          `
-    articulos.appendChild(item) // creamos la lista de los articulos y mostramos en pantalla
-
-   
-   }      
+    for(let articulo of productStock){   
+        let item =document.createElement("div")    
+        item.classList.add('form-check', 'd-flex','row', 'align-items-center', 'justify-content-around')
+        item.innerHTML= `   <div class="col-6">
+                                <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios" value=${articulo[0].sku} >
+                                <label class="form-check-label" for="exampleRadios1">${articulo[0].nombre}</label>
+                            </div>
+                            <div class="col-3"> 
+                                <input type="number" class="form-control" id="SKU-${articulo[0].sku}" placeholder="0" min="0" required>
+                            </div>
+                            `
+        articulos.appendChild(item) // creamos la lista de los articulos y mostramos en pantalla
+    }      
 }
 
 function captureInputs(event){
@@ -331,7 +318,8 @@ function captureInputs(event){
            } 
         
      } else if(nombre=="" || apellido=="" || telefono=="" || mail==""){ //validamos que todos los campos esten rellenados
-        confirm("Debes ingresar todos los datos del cliente")
+        //confirm("Debes ingresar todos los datos del cliente")
+        event.preventDefault()
      } else{  // sino, entonces estamos creando una nueva cotizacion     
            //capturar los checkbox de los articulos           
             let articulosSeleccionados = document.querySelectorAll(".form-check-input")
@@ -362,6 +350,8 @@ function captureInputs(event){
 
 
 function closeQuote (){
+    const overlay= document.querySelector(".overlay")
+    overlay.classList.add("hidden")
     let quoteForm = document.getElementsByClassName("quote-form-container")
     for(let i=0; i<quoteForm.length; i++){
         //console.log(quoteForm)
@@ -371,23 +361,39 @@ function closeQuote (){
       
 }
 
-
+function mostrarModal(){
+    let sessionName= document.querySelector("#online-user").innerText.trim()
+    let userName = document.querySelector("#userName")
+    let loginBtn = document.querySelector(".session")
+    let logoffBtn = document.querySelector(".close-session")
+    let modalTitle= document.querySelector(".card-title")
+    console.log(sessionName)
+    if(sessionName != "Iniciar Sesión"){
+        modalTitle.innerText = "¿Desea Cerrar Sesión?"
+        userName.value = JSON.parse(localStorage.getItem('usuario'))
+        userName.disabled ="true"
+        loginBtn.style.display="none"
+    }else{
+        logoffBtn.style.display="none"
+    }
+}
 
 /* eventos */
 //crear una nueva cotizacion
-let newQuote = document.querySelector(".new-quote")
+
 newQuote.addEventListener("click", blankQuote)
 
 //eliminar - editar una cotizacion
 window.onclick = e => {
     let quoteId= e.target.id.split(" ")
-    //console.log(quoteId)
+   
     if(quoteId[0]=="Eliminar"){
         eraseQuote(quoteId[1])
     }else if(quoteId[0]=="Editar"){      
         showQuote(quoteId[1])
-    }
-    
+    }else if(quoteId[0]=="online-user"){
+        mostrarModal()
+    } 
 } 
 
 //cerrar pagin de cotizacion
@@ -397,8 +403,18 @@ closeQuoteFn.addEventListener("click", closeQuote )
 // boton guardar cotizacion
 let createQuote =document.querySelector(".quoteForm__btn")
 createQuote.addEventListener("click", captureInputs)
-//evento del boton inicio sesion
-user.addEventListener("click", capturarUser) 
 
+//evento del boton inicio sesion dentro del modal login
+loginBtn.addEventListener("click", capturarUser) 
 
+const logoff =document.querySelector(".close-session")
+logoff.addEventListener("click", cerrarSesion )
+
+// chequear el tamaño de la pantalla:
+var w = window.innerWidth;
+if(w<447){
+    const cotTag = document.querySelector(".quote-list-grid").firstElementChild.firstElementChild
+    //console.log(cotTag)
+    cotTag.innerText = "#"
+}
 

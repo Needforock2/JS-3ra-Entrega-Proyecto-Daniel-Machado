@@ -1,0 +1,61 @@
+
+
+.global-container {    
+     
+    display: flex;  
+    align-items: center;  
+    justify-content: center; 
+    
+    
+}  
+form {  
+    padding-top: 10px;  
+    font-size: 14px;  
+    margin-top: 30px;  
+}  
+.card-title {   
+font-weight: 500;  
+ }
+ .card-body{
+    width: 100%;
+   
+ } 
+ 
+.login-form {   
+    width: 100%;  
+    margin: 20px;
+    background-color: $white;  
+}  
+.sign-up {  
+    text-align: center;  
+    padding: 20px 0 0;  
+}  
+.alert {  
+    margin-bottom: -30px;  
+    font-size: 13px;  
+    margin-top: 20px;  
+}  
+.card-text{
+    h3{
+        text-align: left;
+    }
+}
+.modal-content{
+    border: none;
+}
+.modal-header{
+    padding: 3rem 3rem 1rem 3rem;
+    width: 100%;
+    border: none;
+    span{
+        font-size: 3rem;
+    }
+}
+
+.modal{
+    @media (max-width: 447px){        
+        width: 100vw;   
+        height: 100vh ;     
+    }
+
+}
