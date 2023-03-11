@@ -411,10 +411,18 @@ const logoff =document.querySelector(".close-session")
 logoff.addEventListener("click", cerrarSesion )
 
 // chequear el tamaño de la pantalla:
-var w = window.innerWidth;
-if(w<447){
+function reportWindowSize() {    
+    var w = window.innerWidth;
     const cotTag = document.querySelector(".quote-list-grid").firstElementChild.firstElementChild
-    //console.log(cotTag)
-    cotTag.innerText = "#"
-}
+   
+    if(w<1000){        
+        cotTag.innerText = "#"
+    }else{
+        cotTag.innerText = "# Cotización"
+    }
+};
+
+window.onresize = reportWindowSize;
+
+
 
