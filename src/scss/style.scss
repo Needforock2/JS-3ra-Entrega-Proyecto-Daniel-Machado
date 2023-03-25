@@ -7,6 +7,8 @@
 @import "btn.scss";
 @import "card.scss";
 @import "login.scss";
+@import "product.scss";
+@import "spinner.scss";
 
 html {
   font-size: 62.5%;
@@ -380,10 +382,7 @@ main{
   }
 }
 
-.customer-list-grid{
-  @extend .quote-list-grid;
-  grid-template-columns: repeat(4, 1fr) 10px;
-}
+
 .quote-form-container::-webkit-scrollbar {
   display: none;
 }

@@ -16,6 +16,9 @@
         productStock.push([new Producto("CPU", 50000, 4),1])
         productStock.push([new Producto("Memoria RAM", 20000, 5),1])
 
+        
+        
+
         class Usuario {
             constructor(nombre, cotizaciones){
                 this.nombre = nombre
@@ -24,12 +27,13 @@
         }
 
         class Cliente { //creamos objeto cliente
-            constructor(nombre, apellido, telefono, mail) {
+            constructor(nombre, apellido, telefono, mail, id) {
                 this.nombre  = nombre;
                 this.apellido = apellido
                 this.telefono  = telefono;
-                this.mail = mail
-                
+                this.mail = mail;
+                this.id = id;
+                this.cotizaciones = []                
             }
         }
 
@@ -49,7 +53,7 @@
                 }
                 //metodo para calcular los valores sub-tota iva y total
                 obtenerPrecioTotal(){ 
-                    console.log(this.productos)
+                    
                     let precios = this.productos.map(item =>item[0].precio)
                     let cantidades = this.productos.map(item => item[1])        
                     let subTotales = []
@@ -64,22 +68,56 @@
                 }    
             }
 
+function toast (mensaje){
+    Toastify({
+        text: mensaje,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+}
+
         let newQuote = document.querySelector(".new-quote")
-        let cotizaciones = obtenerLocalS() //array donde estarán todas las cotizaciones
+        let cotizaciones = [] //array donde estarán todas las cotizaciones
         document.body.onload = function(){
+            /* const cotBtn = document.querySelectorAll("#cotBtn")
+            const prodBtn = document.querySelectorAll("#prodBtn") */
+       
             if(usuarioEnLS != null){
                 usuario = usuarioEnLS.toUpperCase() 
+                for(let i=0; i< cotBtn.length; i++){
+                   /*  cotBtn[i].style.display="block"
+                    prodBtn[i].style.display="block" */
+                }
                 actualizarUsuario(usuario)
-                printQuote(cotizaciones)
+                toast("Cargando Cotizaciones desde el Servidor")
+                toast("Por favor espere unos segundos")
+                cotizaciones=recibirPantry("cargar")
+                
             } else{
+                for(let i=0; i< cotBtn.length; i++){
+                    cotBtn[i].style.display="none"
+                    prodBtn[i].style.display="none"
+                }                
+                toast("Inicia sesión para comenzar") 
                 newQuote.style.display="none"
                 clearQuoteDOM()
+                mostrarModal()                
+                
+                
             }
             
         }
         function clearQuoteDOM(){ //limpia al DOM donde estan las cotizaciones
             let items = document.querySelectorAll(".cotizacion")
-            console.log(items)
+            
             for(let i =0; i<items.length; i++){ //limpiamos el DOM
                 items[i].remove()
             }
@@ -90,19 +128,22 @@
  // verificaion de inicio de sesion y cargar datos iniciales
     let usuario;
     let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
-    let loginBtn = document.querySelector(".session")
+    //let loginBtn = document.querySelector(".session")
 
-    function actualizarUsuario(usuario){
-        console.log(usuario)
+ /*    function actualizarUsuario(usuario){
+       
         let userName = document.querySelectorAll(".session-name")
         userName[0].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
         userName[1].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
+        toast(`Bienvenido ${usuario}`)
     }
    
-    function cerrarSesion(e){    
-       localStorage.removeItem("usuario")
+    function cerrarSesion(e){      
+        
+        localStorage.removeItem("usuario")
+        
        
-    }
+    }  */
 
     const guardarLocal = (clave, valor) => { //funcion para guardar en localstorage
         localStorage.setItem(clave, JSON.stringify(valor))       
@@ -110,7 +151,8 @@
      };
 
     function obtenerLocalS (){      //obtener cotizaciones en LS   
-        let almacenadas= JSON.parse(localStorage.getItem("listaCotizaciones"))        
+        let almacenadas= JSON.parse(localStorage.getItem("listaCotizaciones")) 
+             
         const cotizaciones = []
         if(almacenadas){
             for(let cotizacion of almacenadas){
@@ -124,7 +166,7 @@
     }     
     
   
-    function capturarUser (){                 
+  /*   function capturarUser (){                 
             let usuario = document.getElementById("userName").value            
             if(usuario.trim().length>0){                
                 guardarLocal("usuario", usuario.trim())
@@ -135,7 +177,7 @@
                 e.preventDefault()
             }             
           
-    }    
+    }     */
    
     // fin de capturar usuario y subirlo al localstorage
 
@@ -166,31 +208,133 @@ function printQuote(arrQuote){   //imprime todas las cotizaciones
         }   
   }
 
+const spinner = document.querySelector(".sk-circle")
+const overlay = document.querySelector(".overlay")
+
+
+function processPantryData(result, operacion){
+    spinner.classList.add("hidden")
+    overlay.classList.add("hidden")
+    
+    let cotInPantry = result["listaCotizaciones"]
+    const cotizacionesPantry = []
+    if(cotInPantry){
+        for(let cotizacion of cotInPantry){
+            let objected = new Cotizacion(cotizacion.cliente, cotizacion.id)
+            objected.agregarProductos(cotizacion.productos)
+            objected.obtenerPrecioTotal()
+            cotizacionesPantry.push(objected)
+        }  
+    }
+    if(operacion == "cargar"){
+        toast("Datos cargados exitosamente desde la API")
+    }
+    if(operacion == "borrar"){
+        toast("Cotizacion eliminada exitosamente")
+    }
+    if(operacion == "editar"){
+        toast("Cotizacion editada exitosamente")
+    }
+    if(operacion == "crear"){
+        toast("Cotizacion creada exitosamente")
+    }
+    
+    printQuote(cotizacionesPantry)
+    guardarLocal("listaCotizaciones", cotizacionesPantry)
+    cotizaciones = cotizacionesPantry
+}
+
+
+const recibirPantry= async (operacion) =>{    
+    spinner.classList.remove("hidden")
+    overlay.classList.remove("hidden")
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,    
+    redirect: 'follow'
+    };
+
+    try {
+            const resp = await fetch("https://getpantry.cloud/apiv1/pantry/ac58ccfd-0062-433b-98ef-39967ba22584/basket/listaCotizaciones", requestOptions)
+            const result = await resp.json()
+
+            processPantryData(result, operacion)
+          
+        }
+    catch (e){
+        toast("Ooops algo salió mal con la API")
+        toast("Refresca la página para reintentar")
+    }
+   
+}
+const guardarPantry = async (valor, operacion) =>{
+    
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify({
+    'listaCotizaciones' : valor
+    });
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+    };
+    spinner.classList.remove("hidden")
+    overlay.classList.remove("hidden")
+    try{
+        const resp = await fetch("https://getpantry.cloud/apiv1/pantry/ac58ccfd-0062-433b-98ef-39967ba22584/basket/listaCotizaciones", requestOptions)
+        await recibirPantry(operacion)
+    }
+    catch(e){
+        toast("Ooops algo salió mal con la API")
+        toast("Refresca la página para reintentar")
+    }
+    
+ 
+}
+
 function crearCotizacion (cliente, productos){ // funcion para crear cotizaciones a partir de un objeto cliente y un array de productos, ademas aumenta el contador de ID de la cotizacion
     //console.log(productos)
     let cotLS = obtenerLocalS()
-    console.log(cotLS)
+    
     let lastQuoteId =0;
     if(cotLS.length>0){
         lastQuoteId = cotLS[cotLS.length-1].id   // ID de la ultima cotizacion
     }    
         
-    let cotizacion = new Cotizacion(cliente, lastQuoteId+1) 
+    let cotizacion = new Cotizacion(cliente, lastQuoteId+1)
+    //cliente.cotizaciones.push(cotizacion.id) 
     cotizacion.agregarProductos(productos)
     cotizacion.obtenerPrecioTotal()    
     cotizaciones.push(cotizacion)  
     
-    guardarLocal("listaCotizaciones", cotizaciones)
+    guardarLocal("listaCotizaciones", cotizaciones) //guardar en LS
+    toast("Creando Cotización")
+    spinner.classList.remove("hidden")
+    overlay.classList.remove("hidden")
+    guardarPantry(cotizaciones, "crear") // guardar JSON en API Pantry
+    
     let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
-    printQuote(cotAlmacenadas) //llama al cotizador como tal
+    //printQuote(cotAlmacenadas) //llama al cotizador como tal
+    
     
 }
 
-function editarCotizacion(cotizacion, listaArticulos){   
+function editarCotizacion(cotizacion, listaArticulos){ 
+    
     cotizacion.agregarProductos(listaArticulos)
     cotizacion.obtenerPrecioTotal()
     guardarLocal("listaCotizaciones", cotizaciones)
-    printQuote(cotizaciones)    
+    toast("Editando Cotización, por favor espere")
+    guardarPantry(cotizaciones, "editar")
+    
+    //printQuote(cotizaciones)    
 }
 
 let clientes = [] //array donde se guardan los clientes registrados
@@ -203,7 +347,10 @@ function eraseQuote(id){
             cotizaciones.splice(i,1)
             let quoteToErase = document.getElementById(id)
             quoteToErase.remove()
-            guardarLocal("listaCotizaciones", cotizaciones)                        
+            guardarLocal("listaCotizaciones", cotizaciones)
+            toast("Eliminando Cotización, por favor espere")
+            guardarPantry(cotizaciones, "borrar")
+                                  
         }
     }
 }
@@ -258,7 +405,7 @@ function eraseItem(){ //borramos los articulos de la lista del DOM para que no s
 function blankQuote (){ //creamos el formulario en blanco con la lista de articulos
     //limpiamos el formulario
     //document.body.classList.add("stop-scrolling");
-    const overlay = document.querySelector(".overlay")
+    
     overlay.classList.remove("hidden")
     let titulo = document.querySelector("#titulo")
      titulo.innerText = `COTIZACIÓN` 
@@ -294,7 +441,8 @@ function captureInputs(event){
 
     let titulo = document.querySelector("#titulo")
      if(titulo.innerText.match(/\d/g) != null){ //si no es null entonces estamos editando una cotizacion existente
-        let quoteID = titulo.innerText.match(/\d/g)[0] //leemos el id de la cotizacion
+        let quoteID = titulo.innerText.match(/\d/g).join("") //leemos el id de la cotizacion
+        
         let cotizacion = cotizaciones.filter(cotizacion=> cotizacion.id == quoteID) //y la extraemos del array de cotizaciones
         cotizacion[0].cliente = newCliente
         let articulosSeleccionados = document.querySelectorAll(".form-check-input")
@@ -313,8 +461,9 @@ function captureInputs(event){
             if(listaArticulos.length>=1){                
                 editarCotizacion(cotizacion[0], listaArticulos)                
                 closeQuote()
+                
             }else{
-                confirm("Debes seleccionar al menos un producto")
+                toast("Debes seleccionar al menos un articulo")
            } 
         
      } else if(nombre=="" || apellido=="" || telefono=="" || mail==""){ //validamos que todos los campos esten rellenados
@@ -328,7 +477,7 @@ function captureInputs(event){
                 if(articulo.checked){                               
                         for(let producto of productStock){
                             if(articulo.value == producto[0].sku){  
-                                console.log(producto[0].sku)
+                                
                                 let cantidad = document.querySelector(`#SKU-${producto[0].sku}`)                  
                                 listaArticulos.push([producto[0], cantidad.value])
                                 
@@ -336,12 +485,13 @@ function captureInputs(event){
                         }                       
                 }    
             }
-            console.log(listaArticulos.length)
+            
             if(listaArticulos.length>=1){
                 crearCotizacion(newCliente, listaArticulos)              
                 closeQuote()
+               
             }else{
-                confirm("Debes seleccionar al menos un producto")
+                toast("Debes seleccionar al menos un articulo")
             }
         }
  
@@ -350,7 +500,7 @@ function captureInputs(event){
 
 
 function closeQuote (){
-    const overlay= document.querySelector(".overlay")
+    
     overlay.classList.add("hidden")
     let quoteForm = document.getElementsByClassName("quote-form-container")
     for(let i=0; i<quoteForm.length; i++){
@@ -361,14 +511,17 @@ function closeQuote (){
       
 }
 
-function mostrarModal(){
+/* function mostrarModal(){
     let sessionName= document.querySelector("#online-user").innerText.trim()
     let userName = document.querySelector("#userName")
     let loginBtn = document.querySelector(".session")
     let logoffBtn = document.querySelector(".close-session")
     let modalTitle= document.querySelector(".card-title")
-    console.log(sessionName)
+    let modalContainer = document.querySelector("#exampleModalCenter")
+    
     if(sessionName != "Iniciar Sesión"){
+        console.log(sessionName)
+        modalContainer.classList.remove("hidden")
         modalTitle.innerText = "¿Desea Cerrar Sesión?"
         userName.value = JSON.parse(localStorage.getItem('usuario'))
         userName.disabled ="true"
@@ -377,7 +530,7 @@ function mostrarModal(){
         logoffBtn.style.display="none"
     }
 }
-
+ */
 /* eventos */
 //crear una nueva cotizacion
 
@@ -396,7 +549,7 @@ window.onclick = e => {
     } 
 } 
 
-//cerrar pagin de cotizacion
+//cerrar pagina de cotizacion
 let closeQuoteFn = document.querySelector(".closeForm__btn")
 closeQuoteFn.addEventListener("click", closeQuote )
 
@@ -405,10 +558,10 @@ let createQuote =document.querySelector(".quoteForm__btn")
 createQuote.addEventListener("click", captureInputs)
 
 //evento del boton inicio sesion dentro del modal login
-loginBtn.addEventListener("click", capturarUser) 
+//loginBtn.addEventListener("click", capturarUser) 
 
-const logoff =document.querySelector(".close-session")
-logoff.addEventListener("click", cerrarSesion )
+/* const logoff =document.querySelector(".close-session")
+logoff.addEventListener("click", cerrarSesion ) */
 
 // chequear el tamaño de la pantalla:
 function reportWindowSize() {    
@@ -423,6 +576,7 @@ function reportWindowSize() {
 };
 
 window.onresize = reportWindowSize;
+
 
 
 
