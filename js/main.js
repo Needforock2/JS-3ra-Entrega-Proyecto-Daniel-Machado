@@ -38,14 +38,14 @@
         }
 
         class Cotizacion { //creamos objeto cotizacion que se compone de los objetos clientes y productos.
-            constructor(cliente, id) {
+            constructor(cliente, id , date) {
                 this.cliente  = cliente;
                 this.productos  = []; //array 2D que contiene el articulo (objeto) y la cantidad
                 this.id = id;
                 this.subTotal;
                 this.iva;
                 this.total;
-                this.date = new Date();       
+                this.date = new Date(date || new Date());       
             
             }
                 agregarProductos(productos){ //metodo para agregar un array de productos directamente al array productos del objeto.
@@ -65,36 +65,58 @@
                     this.subTotal= subTotales.reduce((suma, precio) => suma + precio, 0);
                     this.iva = this.subTotal*0.19;
                     this.total = this.subTotal + this.iva;
-                }    
+                } 
+                /* fecha(date){
+                    this.date= date;
+
+                }    */
             }
 
-function toast (mensaje){
-    Toastify({
-        text: mensaje,
-        duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-          background: "linear-gradient(to right, #00b09b, #96c93d)",
-        },
-        onClick: function(){} // Callback after click
-      }).showToast();
+function toast (mensaje, codigo){
+    if(codigo == "error"){
+        Toastify({
+            text: mensaje,
+            duration: 5000,
+            newWindow: true,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover       
+            style: {
+              background: "linear-gradient(90deg, rgba(255,149,0,1) 0%, rgba(255,72,0,1) 35%, rgba(255,0,0,1) 100%)",
+            },
+            onClick: function(){} // Callback after click
+          }).showToast();
+            
+    }else{
+        Toastify({
+            text: mensaje,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover       
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            onClick: function(){} // Callback after click
+          }).showToast();
+    }
+    
 }
 
         let newQuote = document.querySelector(".new-quote")
         let cotizaciones = [] //array donde estarán todas las cotizaciones
         document.body.onload = function(){
-            /* const cotBtn = document.querySelectorAll("#cotBtn")
-            const prodBtn = document.querySelectorAll("#prodBtn") */
+            const cotBtn = document.querySelectorAll("#cotBtn")
+            //const prodBtn = document.querySelectorAll("#prodBtn") 
        
             if(usuarioEnLS != null){
                 usuario = usuarioEnLS.toUpperCase() 
                 for(let i=0; i< cotBtn.length; i++){
-                   /*  cotBtn[i].style.display="block"
-                    prodBtn[i].style.display="block" */
+                     cotBtn[i].style.display="block"
+                    /*prodBtn[i].style.display="block" */
                 }
                 actualizarUsuario(usuario)
                 toast("Cargando Cotizaciones desde el Servidor")
@@ -104,7 +126,7 @@ function toast (mensaje){
             } else{
                 for(let i=0; i< cotBtn.length; i++){
                     cotBtn[i].style.display="none"
-                    prodBtn[i].style.display="none"
+                   // prodBtn[i].style.display="none"
                 }                
                 toast("Inicia sesión para comenzar") 
                 newQuote.style.display="none"
@@ -128,22 +150,6 @@ function toast (mensaje){
  // verificaion de inicio de sesion y cargar datos iniciales
     let usuario;
     let usuarioEnLS = JSON.parse(localStorage.getItem('usuario'))
-    //let loginBtn = document.querySelector(".session")
-
- /*    function actualizarUsuario(usuario){
-       
-        let userName = document.querySelectorAll(".session-name")
-        userName[0].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
-        userName[1].innerHTML = `<i class="fa-solid fa-user-large navlink"></i> ${usuario.toUpperCase()} `
-        toast(`Bienvenido ${usuario}`)
-    }
-   
-    function cerrarSesion(e){      
-        
-        localStorage.removeItem("usuario")
-        
-       
-    }  */
 
     const guardarLocal = (clave, valor) => { //funcion para guardar en localstorage
         localStorage.setItem(clave, JSON.stringify(valor))       
@@ -163,24 +169,7 @@ function toast (mensaje){
             }  
         } //else debo imprimir un mensaje para indicar que no hay cotizaciones
         return cotizaciones       
-    }     
-    
-  
-  /*   function capturarUser (){                 
-            let usuario = document.getElementById("userName").value            
-            if(usuario.trim().length>0){                
-                guardarLocal("usuario", usuario.trim())
-                actualizarUsuario(usuario.trim())
-                let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
-                printQuote(cotAlmacenadas) //llama al cotizador como tal
-            }else{
-                e.preventDefault()
-            }             
-          
-    }     */
-   
-    // fin de capturar usuario y subirlo al localstorage
-
+    }    
 
 function printQuote(arrQuote){   //imprime todas las cotizaciones
      
@@ -210,42 +199,50 @@ function printQuote(arrQuote){   //imprime todas las cotizaciones
 
 const spinner = document.querySelector(".sk-circle")
 const overlay = document.querySelector(".overlay")
+const noCotMsg = document.querySelector("#noCot")
 
 
 function processPantryData(result, operacion){
     spinner.classList.add("hidden")
     overlay.classList.add("hidden")
-    
+    console.log(result["listaCotizaciones"])
     let cotInPantry = result["listaCotizaciones"]
     const cotizacionesPantry = []
-    if(cotInPantry){
-        for(let cotizacion of cotInPantry){
-            let objected = new Cotizacion(cotizacion.cliente, cotizacion.id)
-            objected.agregarProductos(cotizacion.productos)
-            objected.obtenerPrecioTotal()
-            cotizacionesPantry.push(objected)
-        }  
+    if(result["listaCotizaciones"].length>0){
+        noCotMsg.classList.add("hidden")
+        if(cotInPantry){
+            for(let cotizacion of cotInPantry){
+                let objected = new Cotizacion(cotizacion.cliente, cotizacion.id, cotizacion.date)
+                objected.agregarProductos(cotizacion.productos)
+                objected.obtenerPrecioTotal()            
+                cotizacionesPantry.push(objected)
+            }  
+        }
+        if(operacion == "cargar"){
+            toast("Datos cargados exitosamente desde la API")
+        }
+        if(operacion == "borrar"){
+            toast("Cotizacion eliminada exitosamente")
+        }
+        if(operacion == "editar"){
+            toast("Cotizacion editada exitosamente")
+        }
+        if(operacion == "crear"){
+            toast("Cotizacion creada exitosamente")
+        }
+        
+        printQuote(cotizacionesPantry)
+        guardarLocal("listaCotizaciones", cotizacionesPantry)
+        
+    }else{
+        noCotMsg.classList.remove("hidden")
     }
-    if(operacion == "cargar"){
-        toast("Datos cargados exitosamente desde la API")
-    }
-    if(operacion == "borrar"){
-        toast("Cotizacion eliminada exitosamente")
-    }
-    if(operacion == "editar"){
-        toast("Cotizacion editada exitosamente")
-    }
-    if(operacion == "crear"){
-        toast("Cotizacion creada exitosamente")
-    }
-    
-    printQuote(cotizacionesPantry)
-    guardarLocal("listaCotizaciones", cotizacionesPantry)
     cotizaciones = cotizacionesPantry
+    
 }
 
 
-const recibirPantry= async (operacion) =>{    
+const  recibirPantry = async (operacion) => {    
     spinner.classList.remove("hidden")
     overlay.classList.remove("hidden")
     var myHeaders = new Headers();
@@ -257,18 +254,16 @@ const recibirPantry= async (operacion) =>{
     redirect: 'follow'
     };
 
-    try {
-            const resp = await fetch("https://getpantry.cloud/apiv1/pantry/ac58ccfd-0062-433b-98ef-39967ba22584/basket/listaCotizaciones", requestOptions)
-            const result = await resp.json()
-
-            processPantryData(result, operacion)
-          
-        }
-    catch (e){
-        toast("Ooops algo salió mal con la API")
-        toast("Refresca la página para reintentar")
+    try{
+        const response = await fetch("https://api.jsonstorage.net/v1/json/0f90dac9-985f-4b19-8bc9-58aeab14a126/679cc292-a9be-4501-9259-b4ea642898c3", requestOptions)
+        const resp = await response.json()       
+        processPantryData(resp, operacion)
     }
-   
+    catch(e){
+        console.log(e)
+        toast("Ooops algo salió mal con la API", "error")
+        toast("Refresca la página para reintentar", "error")
+    }   
 }
 const guardarPantry = async (valor, operacion) =>{
     
@@ -280,27 +275,30 @@ const guardarPantry = async (valor, operacion) =>{
     });
 
     var requestOptions = {
-    method: 'POST',
+    method: 'PUT',
     headers: myHeaders,
     body: raw,
     redirect: 'follow'
     };
     spinner.classList.remove("hidden")
+    
     overlay.classList.remove("hidden")
+    
     try{
-        const resp = await fetch("https://getpantry.cloud/apiv1/pantry/ac58ccfd-0062-433b-98ef-39967ba22584/basket/listaCotizaciones", requestOptions)
-        await recibirPantry(operacion)
+        const resp = await fetch("https://api.jsonstorage.net/v1/json/0f90dac9-985f-4b19-8bc9-58aeab14a126/679cc292-a9be-4501-9259-b4ea642898c3?apiKey=cff9f49f-9b9e-4fe8-97ee-124643309064", requestOptions)
+        recibirPantry(operacion)
     }
     catch(e){
-        toast("Ooops algo salió mal con la API")
-        toast("Refresca la página para reintentar")
+        console.log(e)
+        toast("Ooops algo salió mal con la API", "error")
+        toast("Refresca la página para reintentar", "error")
     }
     
  
 }
 
 function crearCotizacion (cliente, productos){ // funcion para crear cotizaciones a partir de un objeto cliente y un array de productos, ademas aumenta el contador de ID de la cotizacion
-    //console.log(productos)
+   
     let cotLS = obtenerLocalS()
     
     let lastQuoteId =0;
@@ -308,8 +306,7 @@ function crearCotizacion (cliente, productos){ // funcion para crear cotizacione
         lastQuoteId = cotLS[cotLS.length-1].id   // ID de la ultima cotizacion
     }    
         
-    let cotizacion = new Cotizacion(cliente, lastQuoteId+1)
-    //cliente.cotizaciones.push(cotizacion.id) 
+    let cotizacion = new Cotizacion(cliente, lastQuoteId+1)    
     cotizacion.agregarProductos(productos)
     cotizacion.obtenerPrecioTotal()    
     cotizaciones.push(cotizacion)  
@@ -319,10 +316,7 @@ function crearCotizacion (cliente, productos){ // funcion para crear cotizacione
     spinner.classList.remove("hidden")
     overlay.classList.remove("hidden")
     guardarPantry(cotizaciones, "crear") // guardar JSON en API Pantry
-    
-    let cotAlmacenadas = obtenerLocalS() //obtener las cotizaciones guardadas
-    //printQuote(cotAlmacenadas) //llama al cotizador como tal
-    
+   
     
 }
 
@@ -403,8 +397,7 @@ function eraseItem(){ //borramos los articulos de la lista del DOM para que no s
 }
 
 function blankQuote (){ //creamos el formulario en blanco con la lista de articulos
-    //limpiamos el formulario
-    //document.body.classList.add("stop-scrolling");
+    //limpiamos el formulario   
     
     overlay.classList.remove("hidden")
     let titulo = document.querySelector("#titulo")
@@ -511,26 +504,6 @@ function closeQuote (){
       
 }
 
-/* function mostrarModal(){
-    let sessionName= document.querySelector("#online-user").innerText.trim()
-    let userName = document.querySelector("#userName")
-    let loginBtn = document.querySelector(".session")
-    let logoffBtn = document.querySelector(".close-session")
-    let modalTitle= document.querySelector(".card-title")
-    let modalContainer = document.querySelector("#exampleModalCenter")
-    
-    if(sessionName != "Iniciar Sesión"){
-        console.log(sessionName)
-        modalContainer.classList.remove("hidden")
-        modalTitle.innerText = "¿Desea Cerrar Sesión?"
-        userName.value = JSON.parse(localStorage.getItem('usuario'))
-        userName.disabled ="true"
-        loginBtn.style.display="none"
-    }else{
-        logoffBtn.style.display="none"
-    }
-}
- */
 /* eventos */
 //crear una nueva cotizacion
 
