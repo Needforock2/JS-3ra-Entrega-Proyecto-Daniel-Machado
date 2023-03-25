@@ -13,6 +13,8 @@
 html {
   font-size: 62.5%;
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif;
+  height: 100%;
+  margin: 0;
 }
 a {
   text-decoration: none !important;
@@ -26,6 +28,7 @@ a {
 
 .container-fluid {
   padding: 0;
+  margin: 0;
 }
 
 .fa-bars {
@@ -315,7 +318,8 @@ a:hover {
 }
 
 main{
-  margin-bottom: 3rem;
+  min-height: 460px;
+  margin: 0;
 }
 .fa-ellipsis-vertical{
   font-size: 2rem;
@@ -331,7 +335,7 @@ main{
   position: sticky;
   bottom: 10rem;
   @media (max-width: 447px) {
-      bottom: 50%;
+      bottom: 20%;
   }
 }
 

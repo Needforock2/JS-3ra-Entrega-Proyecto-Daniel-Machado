@@ -3,7 +3,9 @@
 body {
   font-size: 16px;
   font-family: 'Montserrat',Helvetica,Arial,Lucida,sans-serif;
-  background-color: #F0F2F0; }
+  background-color: #F0F2F0;
+  min-height: 100%;
+  margin: 0px; }
 
 .header {
   padding: 10px;
@@ -285,7 +287,7 @@ form {
   height: 40px;
   position: absolute;
   z-index: 200;
-  left: 50%;
+  left: 45%;
   top: 0%; }
 
 .sk-circle .sk-child {
@@ -423,7 +425,9 @@ form {
 
 html {
   font-size: 62.5%;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif; }
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif;
+  height: 100%;
+  margin: 0; }
 
 a {
   text-decoration: none !important; }
@@ -434,7 +438,8 @@ a {
   box-sizing: border-box; }
 
 .container-fluid {
-  padding: 0; }
+  padding: 0;
+  margin: 0; }
 
 .fa-bars {
   font-size: 4rem;
@@ -685,7 +690,8 @@ a:hover {
   border-bottom: solid 1px; }
 
 main {
-  margin-bottom: 3rem; }
+  min-height: 460px;
+  margin: 0; }
 
 .fa-ellipsis-vertical {
   font-size: 2rem;
@@ -700,7 +706,7 @@ main {
   bottom: 10rem; }
   @media (max-width: 447px) {
     .plus-button {
-      bottom: 50%; } }
+      bottom: 20%; } }
 
 .fa-circle-plus {
   color: #ff9100;
