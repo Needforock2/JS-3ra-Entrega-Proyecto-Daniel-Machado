@@ -14,11 +14,8 @@
         productStock.push([new Producto("Monitor", 100000, 2),1])
         productStock.push([new Producto("Laptop", 350000, 3),1])
         productStock.push([new Producto("CPU", 50000, 4),1])
-        productStock.push([new Producto("Memoria RAM", 20000, 5),1])
-
-        
-        
-
+        productStock.push([new Producto("Memoria RAM", 20000, 5),1])      
+       
         class Usuario {
             constructor(nombre, cotizaciones){
                 this.nombre = nombre
@@ -65,11 +62,7 @@
                     this.subTotal= subTotales.reduce((suma, precio) => suma + precio, 0);
                     this.iva = this.subTotal*0.19;
                     this.total = this.subTotal + this.iva;
-                } 
-                /* fecha(date){
-                    this.date= date;
-
-                }    */
+                }             
             }
 
 function toast (mensaje, codigo){
@@ -328,7 +321,6 @@ function editarCotizacion(cotizacion, listaArticulos){
     toast("Editando Cotización, por favor espere")
     guardarPantry(cotizaciones, "editar")
     
-    //printQuote(cotizaciones)    
 }
 
 let clientes = [] //array donde se guardan los clientes registrados
@@ -490,17 +482,13 @@ function captureInputs(event){
  
 }
 
-
-
-function closeQuote (){
-    
+function closeQuote (){    
     overlay.classList.add("hidden")
     let quoteForm = document.getElementsByClassName("quote-form-container")
     for(let i=0; i<quoteForm.length; i++){
         //console.log(quoteForm)
         quoteForm[i].style.display="none"
-    }   
-    
+    }     
       
 }
 
@@ -529,12 +517,6 @@ closeQuoteFn.addEventListener("click", closeQuote )
 // boton guardar cotizacion
 let createQuote =document.querySelector(".quoteForm__btn")
 createQuote.addEventListener("click", captureInputs)
-
-//evento del boton inicio sesion dentro del modal login
-//loginBtn.addEventListener("click", capturarUser) 
-
-/* const logoff =document.querySelector(".close-session")
-logoff.addEventListener("click", cerrarSesion ) */
 
 // chequear el tamaño de la pantalla:
 function reportWindowSize() {    
